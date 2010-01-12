@@ -72,7 +72,7 @@ public:
     //shared_ptr<Variable> getRandomSeed();
     virtual void makeMask(StimulusDisplay *display);
     virtual void load(StimulusDisplay *display);
-    virtual Data getCurrentAnnounceDrawData();
+    virtual Datum getCurrentAnnounceDrawData();
 };
 
 #endif 

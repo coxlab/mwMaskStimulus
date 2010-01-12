@@ -470,10 +470,10 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
     makeMask(display);
 }
 
-Data mwMaskStimulus::getCurrentAnnounceDrawData() {
+Datum mwMaskStimulus::getCurrentAnnounceDrawData() {
     //mprintf("!@#$!@#$!@#$!@#getting announce DRAW data for image stimulus %s",tag.c_str() );
     
-    Data announceData(M_DICTIONARY, 11);
+    Datum announceData(M_DICTIONARY, 11);
     announceData.addElement(STIM_NAME,tag);        // char
     announceData.addElement(STIM_ACTION,STIM_ACTION_DRAW);
     announceData.addElement(STIM_TYPE,"image_mask");

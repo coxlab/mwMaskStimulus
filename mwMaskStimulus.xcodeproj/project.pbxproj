@@ -6,6 +6,20 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		5CF17A3410FCD0A900B7EF53 /* Everything */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5CF17A4110FCD0CB00B7EF53 /* Build configuration list for PBXAggregateTarget "Everything" */;
+			buildPhases = (
+			);
+			dependencies = (
+				5CF17A3810FCD0AC00B7EF53 /* PBXTargetDependency */,
+			);
+			name = Everything;
+			productName = Everything;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		5CF9AEBB0FD5795C00F405F6 /* mwMaskStimulusFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CF9AEB70FD5795C00F405F6 /* mwMaskStimulusFactory.cpp */; };
 		5CF9AEBC0FD5795C00F405F6 /* mwMaskStimulusPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CF9AEB90FD5795C00F405F6 /* mwMaskStimulusPlugin.cpp */; };
@@ -16,6 +30,16 @@
 		BFFB3A66104752B400D37348 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFB3A65104752B400D37348 /* OpenGL.framework */; };
 		BFFB3AAB104817CD00D37348 /* MWLibrary.xml in Resources */ = {isa = PBXBuildFile; fileRef = BFFB3AAA104817CD00D37348 /* MWLibrary.xml */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5CF17A3710FCD0AC00B7EF53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D5B49AC048680CD000E48DA /* mwMaskStimulus */;
+			remoteInfo = mwMaskStimulus;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -181,6 +205,7 @@
 			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* mwMaskStimulus */,
+				5CF17A3410FCD0A900B7EF53 /* Everything */,
 			);
 		};
 /* End PBXProject section */
@@ -210,6 +235,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5CF17A3810FCD0AC00B7EF53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D5B49AC048680CD000E48DA /* mwMaskStimulus */;
+			targetProxy = 5CF17A3710FCD0AC00B7EF53 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -222,7 +255,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB913B08733D840010E9CD /* Debug */ = {
+		1DEB913B08733D840010E9CD /* Development (10.5 Compatible) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
@@ -248,7 +281,7 @@
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				WRAPPER_EXTENSION = bundle;
 			};
-			name = Debug;
+			name = "Development (10.5 Compatible)";
 		};
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -275,12 +308,16 @@
 			};
 			name = Release;
 		};
-		1DEB913F08733D840010E9CD /* Debug */ = {
+		1DEB913F08733D840010E9CD /* Development (10.5 Compatible) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					x86_64,
+					i386,
+				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -293,7 +330,7 @@
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};
-			name = Debug;
+			name = "Development (10.5 Compatible)";
 		};
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -314,13 +351,31 @@
 			};
 			name = Release;
 		};
+		5CF17A3510FCD0A900B7EF53 /* Development (10.5 Compatible) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Everything;
+			};
+			name = "Development (10.5 Compatible)";
+		};
+		5CF17A3610FCD0A900B7EF53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Everything;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "mwMaskStimulus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB913B08733D840010E9CD /* Debug */,
+				1DEB913B08733D840010E9CD /* Development (10.5 Compatible) */,
 				1DEB913C08733D840010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -329,8 +384,17 @@
 		1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "mwMaskStimulus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB913F08733D840010E9CD /* Debug */,
+				1DEB913F08733D840010E9CD /* Development (10.5 Compatible) */,
 				1DEB914008733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5CF17A4110FCD0CB00B7EF53 /* Build configuration list for PBXAggregateTarget "Everything" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5CF17A3510FCD0A900B7EF53 /* Development (10.5 Compatible) */,
+				5CF17A3610FCD0A900B7EF53 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
