@@ -87,7 +87,8 @@ shared_ptr<mw::Component> mwMaskStimulusFactory::createObject(std::map<std::stri
 //    }
     shared_ptr<Variable> random_phase_per_channel(new ConstantVariable(Datum(false)));
     if (!parameters["random_phase_per_channel"].empty()) {
-        random_phase_per_channel = reg->getVariable(parameters.find("random_seed")->second);
+        random_phase_per_channel = reg->getVariable(parameters.find("random_phase_per_channel")->second);
+        mprintf("Found random_phase_per_channel %b", random_phase_per_channel->getValue().getBool());
     }
     //long random_seed = reg->getLong(parameters["random_seed"], seedStr);
 	// !!! check this next one !!!

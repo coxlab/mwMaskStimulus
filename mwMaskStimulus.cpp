@@ -32,6 +32,7 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
                                shared_ptr<Variable> _random_seed,
                                shared_ptr<Variable> _random_phase_per_channel)
                                 : ImageStimulus (_tag, _filename, _xoffset, _yoffset, _xscale, _yscale, _rot, _alpha),
+                                random_seed(shared_ptr<Variable>()), random_phase_per_channel(shared_ptr<Variable>()),
                                 rng(_random_seed->getValue().getInteger()), phase_distribution(-3.14,3.14), random_phase_gen(rng,phase_distribution) {
     random_seed = _random_seed;
     imageLoaded = false;
@@ -51,6 +52,7 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
                shared_ptr<Variable> _random_seed,
                shared_ptr<Variable> _random_phase_per_channel)
                 : ImageStimulus (_tag, _filename, _xoffset, _yoffset, _xscale, _yscale, _rot, _alpha),
+                random_seed(shared_ptr<Variable>()), random_phase_per_channel(shared_ptr<Variable>()),
                 rng(_random_seed->getValue().getInteger()), phase_distribution(-3.14,3.14), random_phase_gen(rng,phase_distribution) {
     filename = _filename;
     texture_maps = _texture_maps;
@@ -63,6 +65,7 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
 
 mwMaskStimulus::mwMaskStimulus(const mwMaskStimulus &tocopy)
     :ImageStimulus((ImageStimulus&) tocopy),
+    random_seed(shared_ptr<Variable>()), random_phase_per_channel(shared_ptr<Variable>()),
     phase_distribution(-3.14,3.14), random_phase_gen(rng,phase_distribution) {
         //random_seed = tocopy.random_seed;
         // bjg: do I want to copy the imageLoaded variable or just set it to false?
@@ -82,7 +85,7 @@ mwMaskStimulus::~mwMaskStimulus(){
 }
 
 Stimulus * mwMaskStimulus::frozenClone(){
-    //mprintf("mwMaskStimulus::frozenClone called...");
+    mprintf("mwMaskStimulus::frozenClone called...");
 	shared_ptr<Variable> x_clone(xoffset->frozenClone());
 	shared_ptr<Variable> y_clone(yoffset->frozenClone());
 	shared_ptr<Variable> xs_clone(xscale->frozenClone());
@@ -178,7 +181,7 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
     fftwf_complex *random_phase = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * height * width);
     // use the generator to fill the phase array
     if (!(random_phase_per_channel->getValue().getBool())) {
-        //mprintf("--Mask-- Generating phase for ALL channels");
+        mprintf("--Mask-- Generating phase for ALL channels");
         for (int i = 0; i < (height * width); i++) {
             complex<float> temp_phase(0.0,random_phase_gen());
             temp_phase = exp(temp_phase);
@@ -201,7 +204,7 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
         fftwf_plan fft_mask_plan = fftwf_plan_dft_2d(height, width, fft_in, fft_out, FFTW_BACKWARD, FFTW_ESTIMATE);
         
         if (random_phase_per_channel->getValue().getBool()) {
-            //mprintf("--Mask-- Generating phase for channel %i",i);
+            mprintf("--Mask-- Generating phase for channel %i",i);
             for (int j = 0; j < (height * width); j++) {
                 complex<float> temp_phase(0.0,random_phase_gen());
                 temp_phase = exp(temp_phase);
@@ -281,9 +284,9 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
         texture_map = *(texture_maps->getElement(i));
         //texture_maps.getElement(i,&texture_map);
         // delete old texture
-        glDeleteTextures(1,&texture_map);
+        //glDeleteTextures(1,&texture_map);
         // replace with new texture
-        glGenTextures(1,&texture_map);
+        //glGenTextures(1,&texture_map);
         glBindTexture(GL_TEXTURE_2D, texture_map);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -293,7 +296,7 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
 		//	mprintf("Image Mask loaded into texture_map %d", texture_map);
 		//}
         // !!! do I need to readd the texture to the list !!!
-        texture_maps->addElement(i, texture_map);
+        //texture_maps->addElement(i, texture_map);
         glBindTexture(GL_TEXTURE_2D, 0);
 	}
     
