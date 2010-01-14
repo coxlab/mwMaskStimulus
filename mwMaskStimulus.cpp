@@ -89,6 +89,15 @@ mwMaskStimulus::~mwMaskStimulus(){
 }
 
 Stimulus * mwMaskStimulus::frozenClone(){
+    
+    if(!loaded){
+        throw SimpleException(M_DISPLAY_MESSAGE_DOMAIN, 
+                              "An attempt was made to 'frozen clone' (make an immutable copy of) "
+                              "a mask stimulus object that was not previously loaded.  Please ensure "
+                              "that an appropriate LoadStimulus action precedes the queueing of each "
+                              " mask stimulus.");
+    }
+    
     mprintf("mwMaskStimulus::frozenClone called...");
 	shared_ptr<Variable> x_clone(xoffset->frozenClone());
 	shared_ptr<Variable> y_clone(yoffset->frozenClone());
@@ -313,6 +322,7 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
     if(imageLoaded){
         // if stimulus is already loaded, just generate a new mask
         makeMask(display);
+        loaded = true;
 		return;
 	}
 	
@@ -328,14 +338,15 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
 	fclose(test);
     
     if( !OpenGLImageLoader::initialized) {
-        //mprintf("--Mask-- starting Devil"); std::cout << "--Mask starting Devil\n";
-        // start up Devil
-        ilInit();
-        // start up OpenGL
-        ilutInit(); // !!! necessary?
-        ilutRenderer(ILUT_OPENGL); // !!! necessary?
-        ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
-        //mprintf("--Mask-- Devil started"); std::cout << "--Mask Devil started\n";
+        OpenGLImageLoader::initialize();
+//        //mprintf("--Mask-- starting Devil"); std::cout << "--Mask starting Devil\n";
+//        // start up Devil
+//        ilInit();
+//        // start up OpenGL
+//        ilutInit(); // !!! necessary?
+//        ilutRenderer(ILUT_OPENGL); // !!! necessary?
+//        ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
+//        //mprintf("--Mask-- Devil started"); std::cout << "--Mask Devil started\n";
     }
     
     //load image from FILE
@@ -477,6 +488,7 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
     
     // make mask
     makeMask(display);
+    loaded = true;
 }
 
 Datum mwMaskStimulus::getCurrentAnnounceDrawData() {

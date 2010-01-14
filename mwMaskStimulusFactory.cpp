@@ -156,11 +156,20 @@ shared_ptr<mw::Component> mwMaskStimulusFactory::createObject(std::map<std::stri
         }
     }
     
+    if(deferred != Stimulus::explicit_load){
+        throw SimpleException(M_PARSER_MESSAGE_DOMAIN, "The Mask stimulus can only be used in explicit loading mode!");
+    }
+    
     newMaskStimulus->setDeferred(deferred);
     
-    // TODO: deferred load?
-    if(deferred == Stimulus::nondeferred_load){
-        newMaskStimulus->load(defaultDisplay.get());
+    //if(true || deferred == Stimulus::nondeferred_load){
+//        newMaskStimulus->load(defaultDisplay.get());
+//    }
+    
+    // this needs to be called at parse time, or all hell breaks loose
+    // TODO: understand why this is
+    if(!OpenGLImageLoader::initialized){
+        OpenGLImageLoader::initialize();
     }
     
 	shared_ptr <StimulusNode> thisStimNode = shared_ptr<StimulusNode>(new StimulusNode(newMaskStimulus));
