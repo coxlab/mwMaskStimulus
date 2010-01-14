@@ -55,7 +55,7 @@ public:
                                         shared_ptr<Variable> _random_phase_per_channel);
     // constructor for frozen clone
     mwMaskStimulus(std::string _tag, std::string _filename,
-                   ExpandableList<GLuint> *_texture_maps,
+                   const vector<GLuint>& _texture_maps,
                    int _width,
                    int _height,
                    shared_ptr<Variable> _xoffset,
