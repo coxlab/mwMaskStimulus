@@ -6,13 +6,14 @@
     <stimuli _id="id36070047" tag="Stimuli">
         <stimulus _id="id36070049" tag="background" full_name="background" type="blank_screen" color="1.0, 1.0, 1.0"></stimulus>
         <stimulus _id="_id1" type="image_file" tag="image" path="1.png" x_size="5.0" y_size="5.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0" deferred="NO"></stimulus>
-        <stimulus _id="_id3" type="image_mask" tag="mask" path="1.png" x_size="5.0" y_size="5.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0"></stimulus>
+        <stimulus _id="_id3" type="image_mask" tag="mask" path="1.png" x_size="5.0" y_size="5.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0" deferred="explicit"></stimulus>
     </stimuli>
     <filters _id="id36070058" tag="Filters"></filters>
     <optimizers _id="id36070060" tag="Optimizers"></optimizers>
     <experiment _id="id36070061" tag="Experiment" full_name="" description="">
         <protocol _id="id36070068" tag="New Protocol" nsamples="1" sampling_method="cycles" selection="sequential">
             <trial _id="_id5" tag="New Trial" nsamples="1" sampling_method="cycles" selection="sequential">
+                <action _id="_id1" tag="Load Stimulus" type="load_stimulus" stimulus="mask"></action>
                 <action _id="_id25" tag="Queue Stimulus 3" type="queue_stimulus" stimulus="background"></action>
                 <action _id="_id7" tag="Queue Stimulus" type="queue_stimulus" stimulus="image"></action>
                 <action _id="_id9" tag="Update Stimulus" type="update_stimulus_display"></action>

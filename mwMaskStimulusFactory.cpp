@@ -73,22 +73,30 @@ shared_ptr<mw::Component> mwMaskStimulusFactory::createObject(std::map<std::stri
     uint32_t default_seed = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
     
     //uint32_t default_seed = static_cast<unsigned int>(std::time(0));
-    shared_ptr<Variable> random_seed(new ConstantVariable(Datum((long)default_seed))); 
+    shared_ptr<Variable> random_seed = shared_ptr<Variable>(new ConstantVariable((long)default_seed)); 
     if(!parameters["random_seed"].empty()){
-        random_seed = reg->getVariable(parameters.find("random_seed")->second);
+        *random_seed = reg->getVariable(parameters.find("random_seed")->second);
         //random_seed = (uint32_t)(reg->getNumber(parameters["random_seed"]).getFloat());
         // TODO error checking
-        mprintf("Found random_seed of %i",random_seed->getValue().getInteger());
+        //mprintf("Found random_seed of %i",random_seed->getValue().getInteger());
     }
     
 //    shared_ptr<Variable> random_phase_per_channel = reg->getVariable(parameters.find("random_phase_per_channel")->second);
 //    if (random_phase_per_channel == 0) {
 //        random_phase_per_channel->setValue(Data(false));
 //    }
-    shared_ptr<Variable> random_phase_per_channel(new ConstantVariable(Datum(false)));
+    
+    shared_ptr<Variable> random_phase_per_channel = shared_ptr<Variable>(new ConstantVariable(false));
     if (!parameters["random_phase_per_channel"].empty()) {
-        random_phase_per_channel = reg->getVariable(parameters.find("random_phase_per_channel")->second);
-        mprintf("Found random_phase_per_channel %b", random_phase_per_channel->getValue().getBool());
+        *random_phase_per_channel = reg->getVariable(parameters["random_phase_per_channel"]);
+        /*
+        if (random_phase_per_channel->getValue()) {
+            mprintf("Found random_phase_per_channel True");
+        } else {
+            mprintf("Found random_phase_per_channel False");
+        }
+        mprintf("Found random_phase_per_channel %i", (int)random_phase_per_channel->getValue().getBool());
+        */
     }
     //long random_seed = reg->getLong(parameters["random_seed"], seedStr);
 	// !!! check this next one !!!

@@ -40,7 +40,7 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
 }
 
 mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
-               ExpandableList<GLuint> *_texture_maps,
+                               std::vector<GLuint> _texture_maps,
                int _width,
                int _height,
                shared_ptr<Variable> _xoffset,
@@ -98,7 +98,7 @@ Stimulus * mwMaskStimulus::frozenClone(){
 	mwMaskStimulus *clone = 
     new mwMaskStimulus(tag,
                        filename,
-                       new ExpandableList<GLuint>(*texture_maps),
+                       texture_maps,
                        width,
                        height,
                        x_clone,
@@ -281,7 +281,7 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
     for(int i = 0; i < display->getNContexts(); i++){
 		display->setCurrent(i);
         GLuint texture_map;
-        texture_map = *(texture_maps->getElement(i));
+        texture_map = texture_maps[i];
         //texture_maps.getElement(i,&texture_map);
         // delete old texture
         //glDeleteTextures(1,&texture_map);
@@ -329,9 +329,9 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
         // start up Devil
         ilInit();
         // start up OpenGL
-        ilutInit(); // !!! necessary?
-        ilutRenderer(ILUT_OPENGL); // !!! necessary?
-        ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
+        //ilutInit(); // !!! necessary?
+        //ilutRenderer(ILUT_OPENGL); // !!! necessary?
+        //ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
         //mprintf("--Mask-- Devil started"); std::cout << "--Mask Devil started\n";
     }
     
@@ -439,7 +439,7 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
 		//	mprintf("Image Mask loaded into texture_map %d", texture_map);
 		//}
         // !!! do I need to readd the texture to the list !!!
-        texture_maps->addElement(i, texture_map);
+        texture_maps.push_back(texture_map);
         glBindTexture(GL_TEXTURE_2D, 0);
 	}
     

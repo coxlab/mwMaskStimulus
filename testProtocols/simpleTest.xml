@@ -5,14 +5,15 @@
     <sounds _id="id36070147" tag="Sounds"></sounds>
     <stimuli _id="id36070152" tag="Stimuli">
         <stimulus _id="id36070158" tag="background" full_name="background" type="blank_screen" color="0, 0, 0"></stimulus>
-        <stimulus _id="id36070169" type="image_mask" tag="mask" path="images/Blob_N2_CamRot_y-30_CamRot_x20_LighPos_x0_y-10_z-10.png" x_size="15.0" y_size="15.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0"></stimulus>
+        <stimulus _id="id36070169" type="image_mask" tag="mask" path="images/Blob_N2_CamRot_y-30_CamRot_x20_LighPos_x0_y-10_z-10.png" x_size="15.0" y_size="15.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0" deferred="explicit" random_phase_per_channel="false"></stimulus>
         <stimulus _id="id36070194" type="image_file" tag="image" path="images/Blob_N2_CamRot_y-30_CamRot_x20_LighPos_x0_y-10_z-10.png" x_size="15.0" y_size="15.0" x_position="0.0" y_position="0.0" rotation="0.0" alpha_multiplier="1.0" deferred="1"></stimulus>
     </stimuli>
     <filters _id="id36070219" tag="Filters"></filters>
     <optimizers _id="id36070224" tag="Optimizers"></optimizers>
     <experiment _id="id36070230" tag="Experiment" full_name="" description="">
         <protocol _id="id36070240" tag="New Protocol" nsamples="1" sampling_method="cycles" selection="sequential">
-            <trial _id="id36070252" tag="New Trial" nsamples="2" sampling_method="cycles" selection="sequential">
+            <trial _id="id36070252" tag="New Trial" nsamples="1" sampling_method="cycles" selection="sequential">
+                <action _id="_id1" tag="generate new mask" type="load_stimulus" stimulus="mask"></action>
                 <action _id="id36070263" tag="queue image" type="queue_stimulus" stimulus="image"></action>
                 <action _id="id36070283" tag="update display 1" type="update_stimulus_display"></action>
                 <action _id="id36070291" type="wait" tag="Wait" duration="100" duration_units="ms"></action>
