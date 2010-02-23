@@ -152,14 +152,32 @@ shared_ptr<mw::Component> mwMaskStimulusFactory::createObject(std::map<std::stri
 	//shared_ptr <mwMaskStimulus> newMaskStimulus = shared_ptr<mwMaskStimulus>(new mwMaskStimulus(tagname, another_attribute));
     
     // bjg: do not read the deferred varialbe from XML, it should always be true
-    bool deferred = true;
-    //if(!parameters["deferred"].empty()){
-    //    deferred = reg->getBoolean(parameters["deferred"]);
-    //}
+    // ddc: overriding this for now; looks like it isn't getting loaded at all
+    Stimulus::load_style deferred = Stimulus::nondeferred_load;
+    if(!parameters["deferred"].empty()){
+        string deferred_value = parameters["deferred"];
+        boost::algorithm::to_lower(deferred_value);
+        if(deferred_value == "yes" || deferred_value == "1" || deferred_value == "true"){
+            deferred = Stimulus::deferred_load;
+        } else if(deferred_value == "explicit"){
+            deferred = Stimulus::explicit_load;
+        }
+    }
     
-    // TODO: deferred load?
-    if(!deferred){
-        newMaskStimulus->load(defaultDisplay.get());
+    if(deferred != Stimulus::explicit_load){
+        throw SimpleException(M_PARSER_MESSAGE_DOMAIN, "The Mask stimulus can only be used in explicit loading mode!");
+    }
+    
+    newMaskStimulus->setDeferred(deferred);
+    
+    //if(true || deferred == Stimulus::nondeferred_load){
+//        newMaskStimulus->load(defaultDisplay.get());
+//    }
+    
+    // this needs to be called at parse time, or all hell breaks loose
+    // TODO: understand why this is
+    if(!OpenGLImageLoader::initialized){
+        OpenGLImageLoader::initialize();
     }
     
 	shared_ptr <StimulusNode> thisStimNode = shared_ptr<StimulusNode>(new StimulusNode(newMaskStimulus));

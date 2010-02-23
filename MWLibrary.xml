@@ -20,7 +20,8 @@
 		x_position="0.0"
 		y_position="0.0"
 		rotation="0.0"
-		alpha_multiplier="1.0"/>
+		alpha_multiplier="1.0"
+        deferred="explicit"/>
     </code>
   </MWElement>
 </MWElements>

@@ -40,7 +40,8 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
 }
 
 mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
-                               std::vector<GLuint> _texture_maps,
+//               std::vector<GLuint> _texture_maps,
+               const vector<GLuint>& _texture_maps,
                int _width,
                int _height,
                shared_ptr<Variable> _xoffset,
@@ -55,7 +56,11 @@ mwMaskStimulus::mwMaskStimulus(std::string _tag, std::string _filename,
                 random_seed(shared_ptr<Variable>()), random_phase_per_channel(shared_ptr<Variable>()),
                 rng(_random_seed->getValue().getInteger()), phase_distribution(-3.14,3.14), random_phase_gen(rng,phase_distribution) {
     filename = _filename;
-    texture_maps = _texture_maps;
+    
+    vector<GLuint>::const_iterator i;
+    for(i = _texture_maps.begin(); i != _texture_maps.end(); ++i){
+        texture_maps.push_back(*i);
+    }
     width = _width;
     height = _height;
     imageLoaded = false;
@@ -85,6 +90,15 @@ mwMaskStimulus::~mwMaskStimulus(){
 }
 
 Stimulus * mwMaskStimulus::frozenClone(){
+    
+    if(!loaded){
+        throw SimpleException(M_DISPLAY_MESSAGE_DOMAIN, 
+                              "An attempt was made to 'frozen clone' (make an immutable copy of) "
+                              "a mask stimulus object that was not previously loaded.  Please ensure "
+                              "that an appropriate LoadStimulus action precedes the queueing of each "
+                              " mask stimulus.");
+    }
+    
     mprintf("mwMaskStimulus::frozenClone called...");
 	shared_ptr<Variable> x_clone(xoffset->frozenClone());
 	shared_ptr<Variable> y_clone(yoffset->frozenClone());
@@ -95,8 +109,9 @@ Stimulus * mwMaskStimulus::frozenClone(){
     shared_ptr<Variable> s_clone(random_seed->frozenClone());
     shared_ptr<Variable> rp_clone(random_phase_per_channel->frozenClone());
     
-	mwMaskStimulus *clone = 
-    new mwMaskStimulus(tag,
+
+    ImageStimulus *clone = 
+        new ImageStimulus(tag,
                        filename,
                        texture_maps,
                        width,
@@ -106,9 +121,7 @@ Stimulus * mwMaskStimulus::frozenClone(){
                        xs_clone,
                        ys_clone,
                        r_clone,
-                       a_clone,
-                       s_clone,
-                       rp_clone);
+                       a_clone);
     /*
     new ImageStimulus(tag, 
                       filename,
@@ -276,7 +289,7 @@ void mwMaskStimulus::makeMask(StimulusDisplay *display) {
         mask_data[(i*4)+3] = channel_modulus[3][i];
     }
     
-    // delete old textures
+    // update textures
     // move 'masks' (original images right now) to gpu
     for(int i = 0; i < display->getNContexts(); i++){
 		display->setCurrent(i);
@@ -310,6 +323,7 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
     if(imageLoaded){
         // if stimulus is already loaded, just generate a new mask
         makeMask(display);
+        loaded = true;
 		return;
 	}
 	
@@ -325,6 +339,8 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
 	fclose(test);
     
     if( !OpenGLImageLoader::initialized) {
+/*
+        <<<<<<< HEAD
         //mprintf("--Mask-- starting Devil"); std::cout << "--Mask starting Devil\n";
         // start up Devil
         ilInit();
@@ -333,6 +349,16 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
         //ilutRenderer(ILUT_OPENGL); // !!! necessary?
         //ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
         //mprintf("--Mask-- Devil started"); std::cout << "--Mask Devil started\n";
+======= */
+        OpenGLImageLoader::initialize();
+//        //mprintf("--Mask-- starting Devil"); std::cout << "--Mask starting Devil\n";
+//        // start up Devil
+//        ilInit();
+//        // start up OpenGL
+//        ilutInit(); // !!! necessary?
+//        ilutRenderer(ILUT_OPENGL); // !!! necessary?
+//        ilutEnable(ILUT_OPENGL_CONV); // !!! necessary?
+//        //mprintf("--Mask-- Devil started"); std::cout << "--Mask Devil started\n";
     }
     
     //load image from FILE
@@ -438,6 +464,9 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
 		//if(texture_map){
 		//	mprintf("Image Mask loaded into texture_map %d", texture_map);
 		//}
+        
+        // DDC: if I'm not mistaken, this is the first place where the texture 
+        // gets added, for the *first* time
         // !!! do I need to readd the texture to the list !!!
         texture_maps.push_back(texture_map);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -471,6 +500,7 @@ void mwMaskStimulus::load(StimulusDisplay *display) {
     
     // make mask
     makeMask(display);
+    loaded = true;
 }
 
 Datum mwMaskStimulus::getCurrentAnnounceDrawData() {
